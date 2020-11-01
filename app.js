@@ -5,14 +5,13 @@ const RandomTextGenerator = require("random-text-generator");
 let randomTextGenerator = new RandomTextGenerator();
 
 const app = express();
-
-
+ 
 var pool = mysql.createPool({
     connectionLimit: 140,
-    host: '127.0.0.1',
-    user: 'root',
-    password: '',
-    database: 'telugubashasangam'
+    host: process.env.JAWSDB_URL,
+    user: process.env.user,
+    password: process.env.pass,
+    database: process.env.database
 });
 
 app.use(express.json());
