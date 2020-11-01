@@ -40,22 +40,22 @@ let tokens = ['3xXcdLDUrs71o8QP',
 ;
 for (let token of tokens) randomTextGenerator.learn(token);
 
-const SELECT_EXAM_BY_MONTH = 'SELECT e.id, e.questions, e.name, e.month,e.passquestion,e.enableExam FROM telugubashasangam.exams e ,telugubashasangam.users u where e.month=? and e.username =? and e.username =u.name and u.token =?'
-const SELECT_EXAM_BY_USER = 'SELECT e.id, e.questions, e.name, e.month,e.passquestion,e.enableExam FROM telugubashasangam.exams e ,telugubashasangam.users u where e.username =? and e.username =u.name and u.token =?'
-const SELECT_EXAM_BY_USER_EXAM_NAME = 'SELECT e.id, e.questions, e.name, e.month,e.passquestion,e.enableExam FROM telugubashasangam.exams e ,telugubashasangam.users u where e.username =? and e.name=? and e.username =u.name and u.token =?'
-const GET_EXAM_COUNT_USER = 'select e.month,count(e.questions) count from telugubashasangam.exams e ,telugubashasangam.users u where e.username =? and e.username =u.name and u.token =? group by  e.month,e.questions'
-const GET_USER = 'SELECT name, id,school,  token FROM telugubashasangam.users u where u.name =? and u.password =? ';
-const SAVE_USER = ' INSERT INTO telugubashasangam.users (name, password, token,school) VALUES(?,?,?,?)';
-const UPDATE_USER = ' UPDATE telugubashasangam.users SET  password=? ,school=? WHERE name=?  and token =? '
-const SAVE_EXAM = "INSERT INTO telugubashasangam.exams (questions, name,username, month,passquestion) VALUES(?,?,?,?,?)";
-const UPDATE_EXAM = "UPDATE telugubashasangam.exams SET questions=?,enableExam=?, name=?,username=?, month=?,passquestion=? WHERE id=?";
-const UPDATE_EXAM_TYPE='update telugubashasangam.exams set enableExam=? where id=?';
-const USER_GEN_VAIDATE = "select name from telugubashasangam.users u where u.name =? and u.token =?";
-const SAVE_USER_EXAM = "INSERT INTO telugubashasangam.user_exams (name, attempts, marks, saveEnabled, school, examname) VALUES(?, ?, ?, ?, ?, ?)";
-const GET_USER_EXAM = "SELECT ID from telugubashasangam.user_exams where name=? and examname= ? ";
-const GET_USER_EXAM_TAKEN = "SELECT id, name, attempts, marks, saveEnabled, school, examname FROM telugubashasangam.user_exams where examname=?";
-const GET_EXAM = "SELECT id, questions, name, month, passquestion, enableExam FROM telugubashasangam.exams where name=? and enableExam =1";
-const GET_TAKE_EXAM ="SELECT id, questions, name, month, passquestion, enableExam FROM telugubashasangam.exams WHERE month=(SELECT DATE_FORMAT(CURRENT_DATE(), '%b') from DUAL)   and enableExam =1";
+const SELECT_EXAM_BY_MONTH = 'SELECT e.id, e.questions, e.name, e.month,e.passquestion,e.enableExam FROM exams e ,users u where e.month=? and e.username =? and e.username =u.name and u.token =?'
+const SELECT_EXAM_BY_USER = 'SELECT e.id, e.questions, e.name, e.month,e.passquestion,e.enableExam FROM exams e ,users u where e.username =? and e.username =u.name and u.token =?'
+const SELECT_EXAM_BY_USER_EXAM_NAME = 'SELECT e.id, e.questions, e.name, e.month,e.passquestion,e.enableExam FROM exams e ,users u where e.username =? and e.name=? and e.username =u.name and u.token =?'
+const GET_EXAM_COUNT_USER = 'select e.month,count(e.questions) count from exams e ,users u where e.username =? and e.username =u.name and u.token =? group by  e.month,e.questions'
+const GET_USER = 'SELECT name, id,school,  token FROM users u where u.name =? and u.password =? ';
+const SAVE_USER = ' INSERT INTO users (name, password, token,school) VALUES(?,?,?,?)';
+const UPDATE_USER = ' UPDATE users SET  password=? ,school=? WHERE name=?  and token =? '
+const SAVE_EXAM = "INSERT INTO exams (questions, name,username, month,passquestion) VALUES(?,?,?,?,?)";
+const UPDATE_EXAM = "UPDATE exams SET questions=?,enableExam=?, name=?,username=?, month=?,passquestion=? WHERE id=?";
+const UPDATE_EXAM_TYPE='update exams set enableExam=? where id=?';
+const USER_GEN_VAIDATE = "select name from users u where u.name =? and u.token =?";
+const SAVE_USER_EXAM = "INSERT INTO user_exams (name, attempts, marks, saveEnabled, school, examname) VALUES(?, ?, ?, ?, ?, ?)";
+const GET_USER_EXAM = "SELECT ID from user_exams where name=? and examname= ? ";
+const GET_USER_EXAM_TAKEN = "SELECT id, name, attempts, marks, saveEnabled, school, examname FROM user_exams where examname=?";
+const GET_EXAM = "SELECT id, questions, name, month, passquestion, enableExam FROM exams where name=? and enableExam =1";
+const GET_TAKE_EXAM ="SELECT id, questions, name, month, passquestion, enableExam FROM exams WHERE month=(SELECT DATE_FORMAT(CURRENT_DATE(), '%b') from DUAL)   and enableExam =1";
 app.use(cors())
 
 app.post('/user/exam/getExam', function (req, res) {
