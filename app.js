@@ -10,6 +10,7 @@ var pool = mysql.createPool({
     connectionLimit: 140,
     host: process.env.JAWSDB_URL,
     user: process.env.user,
+	port: process.env.port,
     password: process.env.pass,
     database: process.env.database
 });
