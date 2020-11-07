@@ -6,15 +6,29 @@ const RandomTextGenerator = require("random-text-generator");
 let randomTextGenerator = new RandomTextGenerator();
 
 const app = express();
-console.log('URL:   ', process.env.JAWSDB_URL)
-var pool = mysql.createPool({
-    connectionLimit: 10,
-    host: process.env.JAWSDB_URL,
-    user: process.env.user,
-    port: process.env.dbport,
-    password: process.env.pass,
-    database: process.env.database
-});
+var pool = null;
+//console.log(process.env)
+if(process.env.PROFILE!=null && process.env.PROFILE==='prod'){
+    pool = mysql.createPool({
+        connectionLimit: 10,
+        host: process.env.JAWSDB_URL,
+        user: process.env.user,
+        port: process.env.dbport,
+        password: process.env.pass,
+        database: process.env.database
+    });
+}else{
+    pool = mysql.createPool({
+        connectionLimit: 10,
+        host: process.env.LOCAL_URL,
+        user: process.env.LOCAL_user,
+        port: process.env.LOCAL_dbport,
+        password: process.env.LOCAL_pass,
+        database: process.env.LOCAL_database
+    });
+    
+}
+
 
 app.use(express.json());
 
@@ -45,7 +59,7 @@ for (let token of tokens) randomTextGenerator.learn(token);
 const SELECT_EXAM_BY_MONTH = 'SELECT e.id, e.questions, e.name, e.month,e.passquestion,e.enableExam FROM exams e ,users u where e.month=? and e.username =? and e.username =u.name and u.token =?'
 const SELECT_EXAM_BY_USER = 'SELECT e.id, e.questions, e.name, e.month,e.passquestion,e.enableExam FROM exams e ,users u where e.username =? and e.username =u.name and u.token =?'
 const SELECT_EXAM_BY_USER_EXAM_NAME = 'SELECT e.id, e.questions, e.name, e.month,e.passquestion,e.enableExam FROM exams e ,users u where e.username =? and e.name=? and e.username =u.name and u.token =?'
-const GET_EXAM_COUNT_USER = 'select e.month,count(e.questions) count from exams e ,users u where e.username =? and e.username =u.name and u.token =? group by  e.month,e.questions'
+const GET_EXAM_COUNT_USER = 'select e.month,count(e.questions) count from exams e ,users u where e.username =? and e.username =u.name and u.token =? group by  e.month'
 const GET_USER = 'SELECT name, id,school,  token FROM users u where u.name =? and u.password =? ';
 const SAVE_USER = ' INSERT INTO users (name, password, token,school) VALUES(?,?,?,?)';
 const UPDATE_USER = ' UPDATE users SET  password=? ,school=? WHERE name=?  and token =? '
@@ -944,7 +958,7 @@ app.post('/user/update', function (req, res) {
 });
 function releaseQuery(conn) {
     // return the query back to the pool
-    conn.release()
+ if (conn!=null)  conn.release()
 }
 app.listen(process.env.PORT || 4000, () => {
     console.log('Server Started | 4000')
